@@ -1,4 +1,4 @@
-package main
+package geoplugin
 
 import (
 	"encoding/json"
@@ -7,10 +7,6 @@ import (
 	"net/http"
 	"os"
 )
-
-func main() {
-
-}
 
 // Geoip data coming from http://www.geoplugin.net/json.gp
 type Geoip struct {
