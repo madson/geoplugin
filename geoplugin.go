@@ -63,7 +63,8 @@ func GetGeoIP() Geoip {
 	return geoip
 }
 
-func (ip Geoip) print() {
+// Print a geoip object
+func (ip Geoip) Print() {
 	fmt.Println(ip.Request)
 	fmt.Println(ip.City)
 	fmt.Println(ip.RegionCode)
