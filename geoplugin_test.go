@@ -1,9 +1,11 @@
 package geoplugin
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGetGeoIp(t *testing.T) {
-	t.Run("testing get geoip from Geoplugin", func(t *testing.T) {
+	t.Run("Should return an IP address from Geoplugin", func(t *testing.T) {
 		geoip := GetGeoIP()
 
 		if geoip.Request == "" {
