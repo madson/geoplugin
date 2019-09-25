@@ -37,54 +37,56 @@ type Geoip struct {
 }
 
 // GetGeoIP function gets IP struct from Geoip
-func GetGeoIP() Geoip {
+func GetGeoIP() (Geoip, error) {
+	geoip := Geoip{}
 	url := "http://www.geoplugin.net/json.gp"
 
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "getip: %v\n", err)
+		fmt.Fprintf(os.Stderr, "geoplugin: reading %s: %v\n", url, err)
+		return geoip, err
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
+	resp.Body.Close()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "getip: reading %s: %v\n", url, err)
+		fmt.Fprintf(os.Stderr, "geoplugin: %v\n", err)
+		return geoip, err
 	}
 
-	resp.Body.Close()
-
-	geoip := Geoip{}
 	err = json.Unmarshal([]byte(b), &geoip)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintf(os.Stderr, "geoplugin: %v\n", err)
+		return geoip, err
 	}
 
-	return geoip
+	return geoip, nil
 }
 
 // Print a Geoip struct
 func (ip Geoip) Print() {
-	fmt.Printf("%-22v: %v\n", "Request", ip.Request)
-	fmt.Printf("%-22v: %v\n", "Status", ip.Status)
-	fmt.Printf("%-22v: %v\n", "Delay", ip.Delay)
-	fmt.Printf("%-22v: %v\n", "Dredit", ip.Dredit)
-	fmt.Printf("%-22v: %v\n", "City", ip.City)
-	fmt.Printf("%-22v: %v\n", "Region", ip.Region)
-	fmt.Printf("%-22v: %v\n", "RegionCode", ip.RegionCode)
-	fmt.Printf("%-22v: %v\n", "RegionName", ip.RegionName)
-	fmt.Printf("%-22v: %v\n", "AreaCode", ip.AreaCode)
-	fmt.Printf("%-22v: %v\n", "DmaCode", ip.DmaCode)
-	fmt.Printf("%-22v: %v\n", "CountryCode", ip.CountryCode)
-	fmt.Printf("%-22v: %v\n", "CountryName", ip.CountryName)
-	fmt.Printf("%-22v: %v\n", "InEU", ip.InEU)
-	fmt.Printf("%-22v: %v\n", "EuVATrate", ip.EuVATrate)
-	fmt.Printf("%-22v: %v\n", "ContinentCode", ip.ContinentCode)
-	fmt.Printf("%-22v: %v\n", "ContinentName", ip.ContinentName)
-	fmt.Printf("%-22v: %v\n", "Latitude", ip.Latitude)
-	fmt.Printf("%-22v: %v\n", "Longitude", ip.Longitude)
-	fmt.Printf("%-22v: %v\n", "LocationAccuracyRadius", ip.LocationAccuracyRadius)
-	fmt.Printf("%-22v: %v\n", "Timezone", ip.Timezone)
-	fmt.Printf("%-22v: %v\n", "CurrencyCode", ip.CurrencyCode)
-	fmt.Printf("%-22v: %v\n", "CurrencySymbol", ip.CurrencySymbol)
-	fmt.Printf("%-22v: %v\n", "CurrencySymbolUTF8", ip.CurrencySymbolUTF8)
-	fmt.Printf("%-22v: %v\n", "CurrencyConverter", ip.CurrencyConverter)
+	fmt.Printf("%-22s: %v\n", "Request", ip.Request)
+	fmt.Printf("%-22s: %v\n", "Status", ip.Status)
+	fmt.Printf("%-22s: %v\n", "Delay", ip.Delay)
+	fmt.Printf("%-22s: %v\n", "Dredit", ip.Dredit)
+	fmt.Printf("%-22s: %v\n", "City", ip.City)
+	fmt.Printf("%-22s: %v\n", "Region", ip.Region)
+	fmt.Printf("%-22s: %v\n", "RegionCode", ip.RegionCode)
+	fmt.Printf("%-22s: %v\n", "RegionName", ip.RegionName)
+	fmt.Printf("%-22s: %v\n", "AreaCode", ip.AreaCode)
+	fmt.Printf("%-22s: %v\n", "DmaCode", ip.DmaCode)
+	fmt.Printf("%-22s: %v\n", "CountryCode", ip.CountryCode)
+	fmt.Printf("%-22s: %v\n", "CountryName", ip.CountryName)
+	fmt.Printf("%-22s: %v\n", "InEU", ip.InEU)
+	fmt.Printf("%-22s: %v\n", "EuVATrate", ip.EuVATrate)
+	fmt.Printf("%-22s: %v\n", "ContinentCode", ip.ContinentCode)
+	fmt.Printf("%-22s: %v\n", "ContinentName", ip.ContinentName)
+	fmt.Printf("%-22s: %v\n", "Latitude", ip.Latitude)
+	fmt.Printf("%-22s: %v\n", "Longitude", ip.Longitude)
+	fmt.Printf("%-22s: %v\n", "LocationAccuracyRadius", ip.LocationAccuracyRadius)
+	fmt.Printf("%-22s: %v\n", "Timezone", ip.Timezone)
+	fmt.Printf("%-22s: %v\n", "CurrencyCode", ip.CurrencyCode)
+	fmt.Printf("%-22s: %v\n", "CurrencySymbol", ip.CurrencySymbol)
+	fmt.Printf("%-22s: %v\n", "CurrencySymbolUTF8", ip.CurrencySymbolUTF8)
+	fmt.Printf("%-22s: %v\n", "CurrencyConverter", ip.CurrencyConverter)
 }
